@@ -1,7 +1,6 @@
-# group-demo
+# breadcrumb-demo
 
-> A Vue.js project
-[zy-vue-boilerplate](http://115.29.188.190/git/%E8%91%9B%E5%9C%A3%E6%98%8E/vue-boilerplate)
+> 一个实现Vue单页应用-面包屑路由的demo，支持浏览器的前进后退键，能够暂存页面数据并在获取新数据后更新页面数据。
 
 ## Build Setup
 
@@ -14,18 +13,11 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+接口使用[JSON Server](https://github.com/typicode/json-server)，使用目录下的db.json作为数据源。
+```
+$ npm install -g json-server
+$ json-server --watch db.json
+```
+默认端口http://localhost:3000，接口模拟延迟600ms
