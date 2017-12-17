@@ -7,7 +7,7 @@ let state = {
     }
   ],
   breadcrumbsSnapshot: [],
-  currentBreadcrumbsIndex: -1,
+  currentBreadcrumbsIndex: 0,
   activeBreadcrumbItem: 'home',
   groups: [],
   pageData: {},
@@ -22,23 +22,66 @@ let mutations = {
   },
   setNextBreadcrumb(state, breadcrumb) {
     state.breadcrumbs.push(breadcrumb)
+    state.breadcrumbsSnapshot = state.breadcrumbsSnapshot.slice(0, state.currentBreadcrumbsIndex + 1)
     state.currentBreadcrumbsIndex += 1
-    state.breadcrumbsSnapshot.push(state.breadcrumbs)
+    // state.breadcrumbsSnapshot.push(state.breadcrumbs.slice())
+    state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
+    // state.breadcrumbsSnapshot = state.breadcrumbsSnapshot.slice(0,state.currentBreadcrumbsIndex+1)
   },
   refreshCurrentBreadcrumb(state, breadcrumb) {
     state.breadcrumbs[state.breadcrumbs.length - 1] = breadcrumb
     state.breadcrumbs = state.breadcrumbs.slice()
-    state.breadcrumbsSnapshot[state.breadcrumbsSnapshot.length - 1] = state.breadcrumbs.slice()
+    state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
   },
   resetCurrentBreadcrumb(state, breadcrumb) {
     state.breadcrumbs[state.breadcrumbs.length - 1] = breadcrumb
     state.breadcrumbs = state.breadcrumbs.slice()
     state.currentBreadcrumbsIndex += 1
-    state.breadcrumbsSnapshot.push(state.breadcrumbs.slice())
+    state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
+    // state.breadcrumbsSnapshot = state.breadcrumbsSnapshot.slice(0,state.currentBreadcrumbsIndex+1)
   },
   setPageData(state, data) {
     Object.assign(state.pageData, data)
-  }
+  },
+  nextBreadcrumbsSnapshot(state) {
+    state.currentBreadcrumbsIndex += 1
+    state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
+    state.breadcrumbsSnapshot = state.breadcrumbsSnapshot.slice(0,state.currentBreadcrumbsIndex+1)
+  },
+  addHomeBreadcrumbs(state, length) {
+    if (state.breadcrumbs.length == length) {
+      state.breadcrumbs.unshift({
+        text: '主页',
+        tabName: 'home',
+        path: '/home'
+      })
+      state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
+    }
+    if (length === 0) {
+      state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex] = state.breadcrumbs.slice()
+    }
+  },
+  setCurrentBreadcrumbByIndex(state) {
+    state.breadcrumbs = state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex].slice()
+  },
+  popstateBack(state) {
+    state.currentBreadcrumbsIndex -= 1
+    if (state.currentBreadcrumbsIndex < 0) {
+      debugger
+      location.reload()
+    } else {
+      state.breadcrumbs = state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex].slice()
+    }
+  },
+  popstateForword(state) {
+    if (state.currentBreadcrumbsIndex > state.breadcrumbsSnapshot.length - 1) {
+      debugger
+      location.reload()
+    } else {
+      state.currentBreadcrumbsIndex += 1
+      state.breadcrumbs = state.breadcrumbsSnapshot[state.currentBreadcrumbsIndex].slice()
+    }
+  },
 };
 
 let actions = {};

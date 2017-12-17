@@ -12,7 +12,7 @@ const utils = {
     })
   },
   pushState(item, config) {
-    let path = '/home/' + config.type + '/' + item.id
+    let path = '/home/' + Date.now() + '/' + config.type + '/' + item.id
     switch (config.option) {
       case 'next':
         this.$store.commit('setNextBreadcrumb', {
@@ -40,6 +40,7 @@ const utils = {
     }
     console.info('breadcrumbsSnapshot', this.$store.state.app.breadcrumbsSnapshot)
     console.info('breadcrumbsIndex', this.$store.state.app.currentBreadcrumbsIndex)
+    console.info('history', history.state)
     let data = {}
     data[config.route.path] = JSON.parse(JSON.stringify(config.data))
     this.$store.commit('setPageData', data)
@@ -116,18 +117,21 @@ const utils = {
   refreshBreadcrumb() {
     let itemInfo = this.$utils.getItemByRoute.bind(this)(this.$route);
     let item = itemInfo.item
-    let path = '/home/' + itemInfo.type + '/' + item.id
+    let path = '/home/' + Date.now() + '/'  + itemInfo.type + '/' + item.id
     this.$store.commit("refreshCurrentBreadcrumb", {
       text: item.name,
       tabName: item.name,
       path
     });
   },
-  async detailPageMountedFunc(){
+  async detailPageMountedFunc() {
     this.$utils.getPastData.bind(this)(this.$route.path);
     this.render();
     // console.info("past members", this.$store.state.app.members);
-    this.$utils.refreshBreadcrumb.bind(this)();
+    if (this.$store.state.app.breadcrumbs.length == 1) {
+      this.$utils.refreshBreadcrumb.bind(this)();
+      this.$store.commit("addHomeBreadcrumbs", 1);
+    }
     await this.$utils.refreshLists.bind(this)();
     this.render();
     this.$utils.refreshBreadcrumb.bind(this)();

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import Router from '../packages/vue-router'
 
 import HomePage from '@/pages/Home'
 import GroupPage from '@/pages/GroupPage'
@@ -14,10 +14,15 @@ export default new Router({
     {
       path: '/',
       name: 'index',
-      redirect: '/home'
+      redirect: '/home/' + Date.now()
     },
     {
       path: '/home',
+      name: 'index',
+      redirect: '/home/' + Date.now()
+    },
+    {
+      path: '/home/:date',
       name: 'HomePage',
       component: HomePage,
       meta: {

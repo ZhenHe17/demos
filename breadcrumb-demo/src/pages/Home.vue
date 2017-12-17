@@ -13,15 +13,15 @@
         <el-col :span='5'>
           <h3>GROUP LIST</h3>
           <ul>
-            <li :class="{'home-list-item':true}" v-for="(item,i) in $store.state.app.groups" :key="item.id" @click="toGroupDetail(item)">
+            <li :class="{'home-list-item':true}" v-for="(item) in $store.state.app.groups" :key="item.id" @click="toGroupDetail(item)">
               <span class="list-text">{{item.name}}</span>
             </li>
           </ul>
         </el-col>
         <el-col :span='5'>
-          <h3>MEMBER LIST</h3>
+          <h3 @click="consoleList">MEMBER LIST</h3>
           <ul>
-            <li :class="{'home-list-item':true}" v-for="(item,i) in $store.state.app.members" :key="item.id" @click="toMemberDetail(item)">
+            <li :class="{'home-list-item':true}" v-for="(item) in $store.state.app.members" :key="item.id" @click="toMemberDetail(item)">
               <span class="list-text">{{item.name}}</span>
             </li>
           </ul>
@@ -41,6 +41,9 @@ export default {
     return {
       contentType: "",
       done: false,
+      pastStateDate: 0,
+      isFirstLoad: true,
+      popStateType: "back",
       data: {}
     };
   },
@@ -48,11 +51,25 @@ export default {
     $route: "routeChanged"
   },
   methods: {
+    consoleList() {
+      console.info(
+        "currentBreadcrumbsIndex",
+        this.$store.state.app.currentBreadcrumbsIndex
+      );
+      console.info(
+        "breadcrumbsSnapshot",
+        this.$store.state.app.breadcrumbsSnapshot
+      );
+    },
     changeBreadcrumbItem(item, i) {
-      this.$router.push(item.path);
+      let newPath = item.path.replace(/\/home\/[0-9]+/,'/home/'+Date.now())
+      this.$router.push(newPath);
       let breadcrumbList = this.$store.state.app.breadcrumbs;
       let newList = breadcrumbList.slice(0, i + 1);
+      console.info('newList',newList)
       this.$store.commit("setValue", { breadcrumbs: newList });
+      this.$store.commit("nextBreadcrumbsSnapshot");
+      this.consoleList();
     },
     toGroupDetail(item) {
       this.$utils.pushState.bind(this)(item, {
@@ -71,57 +88,49 @@ export default {
       });
     },
     setCurrentBreadcrumb() {
-      if (this.$route.name != "HomePage") {
-        let itemInfo = this.$utils.getItemByRoute.bind(this)(this.$route);
-        let item = itemInfo.item;
-        let path = "/home/" + itemInfo.type + "/" + item.id;
-        this.$store.commit("setNextBreadcrumb", {
-          text: item.name,
-          tabName: item.name,
-          path
-        });
-      } else {
-        if (this.$store.state.app.breadcrumbsSnapshot.length == 0) {
-          this.$store.commit("setValue", {
-            breadcrumbsSnapshot: [[
-              {
-                text: "主页",
-                tabName: "home",
-                path: "/home"
-              }
-            ]]
-          });
-        }
+      if (this.$route.name == "HomePage") {
+        this.$store.commit("addHomeBreadcrumbs", 0);
       }
     },
-    routeChanged() {}
+    back() {},
+    forword() {},
+    routeChanged() {
+      // this.setCurrentBreadcrumb()
+    }
   },
   async mounted() {
     let vm = this;
+    console.info(
+      "currentBreadcrumbsIndex",
+      vm.$store.state.app.currentBreadcrumbsIndex
+    );
+    this.pastStateDate =
+      history.state && history.state.date ? history.state.date : 0;
     window.onpopstate = function(event) {
-      let matched = vm.$route.matched;
-      console.info(
-        "breadcrumbsSnapshot",
-        vm.$store.state.app.breadcrumbsSnapshot
-      );
-      console.info(matched);
-      if (vm.$route.fullPath == "/home") {
-        vm.$store.commit("setValue", {
-          breadcrumbs: [
-            {
-              text: "主页",
-              tabName: "home",
-              path: "/home"
-            }
-          ]
-        });
+      let date =
+        vm.$route.params && vm.$route.params.date ? vm.$route.params.date : 0;
+      vm.consoleList();
+      if (vm.isFirstLoad) {
+        vm.isFirstLoad = false;
+        console.info("popstateBack");
+        vm.$store.commit("popstateBack");
+      } else {
+        console.info("date", date);
+        console.info("vm.pastStateDate", vm.pastStateDate);
+        console.info("date > vm.pastStateDate", date > vm.pastStateDate);
+        if (date > vm.pastStateDate) {
+          vm.$store.commit("popstateForword");
+        } else {
+          vm.$store.commit("popstateBack");
+        }
       }
+      vm.pastStateDate = date;
     };
     const loading = this.$loading({
       lock: true,
       text: "Loading",
       spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 0.3)"
+      background: "rgba(0, 0, 0, 0.5)"
     });
     await this.$utils.refreshLists.bind(this)();
     this.setCurrentBreadcrumb();
@@ -184,5 +193,10 @@ export default {
   .list-text:hover {
     background: #ddd;
   }
+}
+.el-loading-spinner .el-loading-text,
+.el-loading-spinner i {
+  color: #fff;
+  font-size: 40px;
 }
 </style>
