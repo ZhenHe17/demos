@@ -3,7 +3,7 @@ const utils = {
   refreshLists() {
     return new Promise(async (resolve, reject) => {
       let randomListNum = Math.floor(Math.random() * 3 + 1);
-      let res = await axios.get("http://localhost:3000/fakelist" + randomListNum);
+      let res = await axios.get("/fakelist" + randomListNum);
       setTimeout(() => {
         this.$store.commit("setValue", { groups: res.data.groups });
         this.$store.commit("setValue", { members: res.data.members });
