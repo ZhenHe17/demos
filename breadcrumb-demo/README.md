@@ -20,4 +20,4 @@ npm run build
 $ npm install -g json-server
 $ json-server --watch db.json
 ```
-默认端口http://localhost:3000，接口模拟延迟600ms
+默认端口localhost:3000，接口模拟延迟600ms
