@@ -14,12 +14,10 @@ import utils from './packages/utils'
 axios.defaults.baseURL = '//localhost:3000'
 axios.defaults.timeout = 6000
 
-Vue.http = Vue.prototype.$http = axios
+Vue.prototype.$http = axios
 Vue.prototype.$utils = utils
-Vue.config.productionTip = false
 Vue.use(ElementUI)
 
-Vue.config.productionTip = false
 Vue.router = router
 
 new Vue({
