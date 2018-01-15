@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "fastify server.js"
   },
   "author": "geshengming",
   "license": "MIT",
   "dependencies": {
     "fastify": "^0.39.1"
+  },
+  "devDependencies": {
+    "fastify-cli": "^0.12.0"
   }
 }
