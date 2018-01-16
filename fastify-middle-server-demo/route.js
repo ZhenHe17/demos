@@ -1,6 +1,9 @@
+let getFakeData = require('./getFakeData')
+
 async function routes (fastify, options) {
   fastify.get('/', async (request, reply) => {
-    return { hello: 'world' }
+    let fakeData = await getFakeData().catch(error => console.error(error));
+    return fakeData
   })
   fastify.get('/list', async (request, reply) => {
     return { data: [1,2,3] }
