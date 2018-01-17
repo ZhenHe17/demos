@@ -1,18 +1,30 @@
 'use strict'
 
-const data = {
+const dataSchema = {
   schema: {
     response: {
       200: {
-        type: 'array',
-        items: {
-          type: 'string'
+        type: 'object',
+        properties: {
+          status: { type: 'string' },
+          message: { type: 'string' },
+          data: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                name: { type: 'string' },
+                id: { type: 'integer' },
+              }
+            }
+          }
         }
       }
-    }
+    },
+    additionalProperties: false
   }
 }
 
 module.exports = {
-  dataSchema: data
+  dataSchema
 }

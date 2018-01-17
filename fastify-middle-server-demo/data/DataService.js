@@ -22,7 +22,12 @@ const getFakeData = function () {
 class DataService {
 
   async getFakeData() {
-    return await getFakeData().catch((err) => { console.error(err) })
+    let data = await getFakeData().catch((err) => { console.error(err) })
+    return {
+      status: 'OK',
+      message: 'get data success',
+      data
+    }
   }
 
 }
