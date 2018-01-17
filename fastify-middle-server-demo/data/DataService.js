@@ -20,7 +20,7 @@ class DataService {
         if (Math.random() < 0.5) {
           resolve(fakeData)
         } else {
-          reject({ message: 'fake error' })
+          reject({ message: '接口设置了50%的几率报错哦' })
         }
       }, 200)
     })

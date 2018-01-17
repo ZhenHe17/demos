@@ -20,6 +20,7 @@ async function registerRoutes(fastify, opts) {
 
   fastify.get('/data', dataSchema, async function (req, reply) {
     let payload;
+    reply.header('Content-Type', 'application/json')
     try {
       payload = {
         status: 'OK',
