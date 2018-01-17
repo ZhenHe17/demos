@@ -2,5 +2,5 @@
 'use strict'
 
 module.exports = async function (fastify, opts) {
-  fastify.register(require('./route'))
+  fastify.register(require('./data'), { prefix: '/api/data' })
 }
