@@ -16,7 +16,6 @@
 - 3.[gulp-demo](https://github.com/ZhenHe17/demos/tree/master/gulp-demo) 
   - 简单的gulp配置
   - 对es6、sass进行了转译
-<!-- -- 2018-1-16 -->
-- 4.[webpack-demo](https://github.com/ZhenHe17/demos/tree/master/webpack-demo) 
-  - 简单的webpack配置
-  - 配置了开发环境的本地服务器
+<!-- -- 2018-3-12 -->
+- 4.[webpack-demo (v4.1.1)](https://github.com/ZhenHe17/demos/tree/master/webpack4-demo) 
+  - 依照[官方指南](https://doc.webpack-china.org/guides/installation/)
