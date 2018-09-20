@@ -4,4 +4,4 @@ doing...
 
 ## TODO
 
-目前章节：模块热替换
+目前章节：tree shaking
