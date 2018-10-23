@@ -1,6 +1,6 @@
 ## Completed
 
-Scheduling Tasks ✅
+Consuming a RESTful Web Service ✅
 
 ## Start:
 
