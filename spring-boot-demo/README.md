@@ -1,6 +1,6 @@
 ## Completed
 
-Consuming a RESTful Web Service ✅
+Accessing Relational Data using JDBC with Spring ✅
 
 ## Start:
 
