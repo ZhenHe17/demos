@@ -1,6 +1,7 @@
 ## Completed
 
-Uploading Files ✅
+Uploading Files ✅done
+Authenticating a User with LDAP 🚀in progress
 
 ## Start:
 
