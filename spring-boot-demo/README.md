@@ -1,7 +1,8 @@
 ## Completed
 
-Uploading Files done ✅
-Authenticating a User with LDAP in progress 🚀
+Uploading Files ✅
+Authenticating a User with LDAP ✅
+Messaging with Redis 🚀
 
 ## Start:
 
